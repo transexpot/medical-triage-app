@@ -1,0 +1,17 @@
+{
+  "summary_id": "00000000-0000-0000-0000-000000000001",
+  "patient_ref": "PATIENT-001",
+  "glucose_value": 6.2,
+  "glucose_unit": "mmol/L",
+  "glucose_condition": "FASTING",
+  "glucose_measurement_date": "2026-11-01",
+  "glucose_source": "LAB_REPORT_001",
+  "hba1c_value": 6.1,
+  "hba1c_unit": "%",
+  "hba1c_measurement_date": "2026-11-01",
+  "hba1c_source": "LAB_REPORT_001",
+  "weight_value": 78.4,
+  "weight_unit": "kg",
+  "weight_measurement_date": "2026-11-01",
+  "weight_source": "CLINIC_VISIT_001"
+}
