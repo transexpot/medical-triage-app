@@ -36,6 +36,19 @@ def classify_defect(role, defect):
     }
 
 
+def change_criticality(role, criticality):
+    if not has_permission(role, "change_status"):
+        return {
+            "allowed": False,
+            "reason": "Role is not allowed to change criticality",
+        }
+
+    return {
+        "allowed": True,
+        "criticality": criticality,
+    }
+
+
 def change_status(role, status):
     if not has_permission(role, "change_status"):
         return {
