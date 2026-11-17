@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+import uuid
 
 
 REQUIRED_FIELDS = [
@@ -122,4 +123,6 @@ def validate_summary(summary):
 
 
 def process(summary):
-    return validate_summary(summary)
+    result = validate_summary(summary)
+    result["events"].append(str(uuid.uuid4()))
+    return result
