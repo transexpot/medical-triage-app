@@ -113,7 +113,7 @@ def validate_summary(summary):
         result["data_complete"] = True
     else:
         result["status"] = "READY_FOR_PHYSICIAN"
-        result["data_complete"] = True
+        result["data_complete"] = False
 
     result["events"].append("STATUS_COMPUTED")
     result["events"].append("FLAG_COMPUTED")
