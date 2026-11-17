@@ -1,6 +1,7 @@
+import uuid
 import json
 from datetime import datetime
-import uuid
+
 
 
 REQUIRED_FIELDS = [
