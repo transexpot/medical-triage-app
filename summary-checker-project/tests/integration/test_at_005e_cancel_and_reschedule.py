@@ -1,6 +1,25 @@
 import json
 import os
+import sys
 import unittest
+
+
+sys.path.insert(
+    0,
+    os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__),
+            "..",
+            "..",
+            "src",
+        )
+    ),
+)
+
+from summary_checker.scheduler import (
+    cancel_appointment,
+    reschedule,
+)
 
 
 class TestAT005ECancelAndReschedule(unittest.TestCase):
@@ -16,43 +35,49 @@ class TestAT005ECancelAndReschedule(unittest.TestCase):
         with open(fixture_path, "r", encoding="utf-8") as file:
             summary = json.load(file)
 
-        # Новая дата приёма после повторного назначения.
         new_appointment_date = "2026-12-01"
 
-        # Проверяем, что новая дата в будущем
-        # относительно даты измерения глюкозы.
-        self.assertLess(
-            summary["glucose_measurement_date"],
+        cancel_result = cancel_appointment(summary)
+
+        self.assertEqual(
+            cancel_result["status"],
+            "ARCHIVED",
+        )
+
+        self.assertIn(
+            "APPOINTMENT_CANCELLED",
+            cancel_result["events"],
+        )
+
+        reschedule_result = reschedule(
+            summary,
             new_appointment_date,
         )
 
-        # Проверяем, что сводка валидна.
-        self.assertIn("summary_id", summary)
-        self.assertIn("patient_ref", summary)
-        self.assertIn("glucose_value", summary)
-        self.assertIn("glucose_unit", summary)
-        self.assertIn("glucose_condition", summary)
-        self.assertIn("glucose_measurement_date", summary)
-        self.assertIn("glucose_source", summary)
+        self.assertNotEqual(
+            reschedule_result["status"],
+            "ARCHIVED",
+        )
 
-        # Это статическая проверка fixture.
-        # После создания движка здесь будет вызов
-        # summary_checker.cancel_appointment(summary)
-        # затем:
-        # summary_checker.reschedule(
-        #     summary,
-        #     new_appointment_date,
-        # )
-        # и проверка:
-        # self.assertNotEqual(result["status"], "ARCHIVED")
-        # self.assertEqual(
-        #     result["clinical_use_deadline"],
-        #     new_appointment_date,
-        # )
-        # self.assertIn("APPOINTMENT_CANCELLED", result["events"])
-        # self.assertIn("APPOINTMENT_RESCHEDULED", result["events"])
-        # self.assertIn("CHECKS_PRESERVED", result["events"])
-        # self.assertIn("DEADLINE_RECALCULATED", result["events"])
+        self.assertEqual(
+            reschedule_result["clinical_use_deadline"],
+            new_appointment_date,
+        )
+
+        self.assertIn(
+            "APPOINTMENT_RESCHEDULED",
+            reschedule_result["events"],
+        )
+
+        self.assertIn(
+            "CHECKS_PRESERVED",
+            reschedule_result["events"],
+        )
+
+        self.assertIn(
+            "DEADLINE_RECALCULATED",
+            reschedule_result["events"],
+        )
 
 
 if __name__ == "__main__":
