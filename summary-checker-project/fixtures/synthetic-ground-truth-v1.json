@@ -1,18 +1,86 @@
 {
   "acceptance_cases": [
-    {"id":"AT-001","expected_status":"READY_FOR_PHYSICIAN","expected_data_complete":true},
-    {"id":"AT-002","expected_status":"BLOCKED","expected_data_complete":false},
-    {"id":"AT-003","expected_status":"READY_WITH_WARNINGS","expected_data_complete":true},
-    {"id":"AT-004","expected_status":"NEEDS_CLARIFICATION","expected_data_complete":false},
-    {"id":"AT-005A","expected_event":"CHECKS_PRESERVED"},
-    {"id":"AT-005B_COMPLETE","expected_status":"DEADLINE_MISSED","expected_data_complete":true},
-    {"id":"AT-005B_BLOCKER","expected_status":"BLOCKED","expected_data_complete":false},
-    {"id":"AT-005C","expected_rule":"latest_deadline_active"},
-    {"id":"AT-005D","expected_status":"ARCHIVED"},
-    {"id":"AT-005E","expected_rule":"dearchive_and_new_deadline"},
-    {"id":"AT-006","expected_rule":"chain_valid"},
-    {"id":"AT-007","expected_rule":"permissions_enforced"},
-    {"id":"AT-008","expected_rule":"metrics_match_ground_truth"},
-    {"id":"AT-009","expected_rule":"deterministic"}
+    {
+      "id": "AT-001",
+      "expected_status": "READY_FOR_PHYSICIAN",
+      "actual_status": "READY_FOR_PHYSICIAN",
+      "expected_data_complete": true,
+      "actual_data_complete": true
+    },
+    {
+      "id": "AT-002",
+      "expected_status": "BLOCKED",
+      "actual_status": "BLOCKED",
+      "expected_data_complete": false,
+      "actual_data_complete": false
+    },
+    {
+      "id": "AT-003",
+      "expected_status": "READY_WITH_WARNINGS",
+      "actual_status": "READY_WITH_WARNINGS",
+      "expected_data_complete": true,
+      "actual_data_complete": false
+    },
+    {
+      "id": "AT-004",
+      "expected_status": "NEEDS_CLARIFICATION",
+      "actual_status": "NEEDS_CLARIFICATION",
+      "expected_data_complete": false,
+      "actual_data_complete": false
+    },
+    {
+      "id": "AT-005A",
+      "expected_event": "CHECKS_PRESERVED",
+      "actual_event": "CHECKS_PRESERVED"
+    },
+    {
+      "id": "AT-005B_COMPLETE",
+      "expected_status": "DEADLINE_MISSED",
+      "actual_status": "DEADLINE_MISSED",
+      "expected_data_complete": true,
+      "actual_data_complete": true
+    },
+    {
+      "id": "AT-005B_BLOCKER",
+      "expected_status": "BLOCKED",
+      "actual_status": "BLOCKED",
+      "expected_data_complete": false,
+      "actual_data_complete": false
+    },
+    {
+      "id": "AT-005C",
+      "expected_rule": "latest_deadline_active",
+      "actual_rule": "latest_deadline_active"
+    },
+    {
+      "id": "AT-005D",
+      "expected_status": "ARCHIVED",
+      "actual_status": "ARCHIVED"
+    },
+    {
+      "id": "AT-005E",
+      "expected_rule": "dearchive_and_new_deadline",
+      "actual_rule": "dearchive_and_new_deadline"
+    },
+    {
+      "id": "AT-006",
+      "expected_rule": "chain_valid",
+      "actual_rule": "chain_valid"
+    },
+    {
+      "id": "AT-007",
+      "expected_rule": "permissions_enforced",
+      "actual_rule": "permissions_enforced"
+    },
+    {
+      "id": "AT-008",
+      "expected_rule": "metrics_match_ground_truth",
+      "actual_rule": "metrics_match_ground_truth"
+    },
+    {
+      "id": "AT-009",
+      "expected_rule": "deterministic",
+      "actual_rule": "deterministic"
+    }
   ]
 }
