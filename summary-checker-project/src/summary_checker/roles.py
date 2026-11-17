@@ -1,99 +1,57 @@
-ROLE_PERMISSIONS = {
-    "executor": [],
-    "reviewer": [],
-    "external_reviewer": [],
-    "physician": [
-        "review_summary",
-        "approve_summary",
-        "request_changes",
+FORBIDDEN_ACTIONS = {
+    "executor": [
+        "run_check",
+        "classify_defect",
+        "change_status",
     ],
-    "auditor": [
-        "view_journal",
-        "view_metrics",
+    "reviewer": [
+        "change_status",
+        "change_criticality",
+    ],
+    "external_reviewer": [
+        "edit_journal",
+        "participate_in_development",
     ],
 }
 
 
-def has_permission(role, action):
-    if role not in ROLE_PERMISSIONS:
-        return False
+def is_allowed(actor_role, action):
+    forbidden = FORBIDDEN_ACTIONS.get(actor_role, [])
 
-    return action in ROLE_PERMISSIONS[role]
+    return action not in forbidden
 
 
-def run_check(role, summary=None):
-    if not has_permission(role, "run_check"):
-        return {
-            "allowed": False,
-            "reason": "Role is not allowed to run checks",
-        }
-
+def run_check(actor_role):
     return {
-        "allowed": True,
-        "summary": summary,
+        "allowed": is_allowed(actor_role, "run_check"),
     }
 
 
-def classify_defect(role, defect=None):
-    if not has_permission(role, "classify_defect"):
-        return {
-            "allowed": False,
-            "reason": "Role is not allowed to classify defects",
-        }
-
+def classify_defect(actor_role):
     return {
-        "allowed": True,
-        "defect": defect,
+        "allowed": is_allowed(actor_role, "classify_defect"),
     }
 
 
-def change_status(role, status=None):
-    if not has_permission(role, "change_status"):
-        return {
-            "allowed": False,
-            "reason": "Role is not allowed to change status",
-        }
-
+def change_status(actor_role):
     return {
-        "allowed": True,
-        "status": status,
+        "allowed": is_allowed(actor_role, "change_status"),
     }
 
 
-def change_criticality(role, criticality=None):
-    if not has_permission(role, "change_status"):
-        return {
-            "allowed": False,
-            "reason": "Role is not allowed to change criticality",
-        }
-
+def change_criticality(actor_role):
     return {
-        "allowed": True,
-        "criticality": criticality,
+        "allowed": is_allowed(actor_role, "change_criticality"),
     }
 
 
-def edit_journal(role, entry=None):
-    if not has_permission(role, "edit_journal"):
-        return {
-            "allowed": False,
-            "reason": "Role is not allowed to edit journal",
-        }
-
+def edit_journal(actor_role):
     return {
-        "allowed": True,
-        "entry": entry,
+        "allowed": is_allowed(actor_role, "edit_journal"),
     }
 
 
-def participate_in_development(role, task=None):
-    if not has_permission(role, "participate_in_development"):
-        return {
-            "allowed": False,
-            "reason": "Role is not allowed to participate in development",
-        }
-
+def participate_in_development(actor_role):
     return {
-        "allowed": True,
-        "task": task,
+        "allowed": is_allowed(actor_role, "participate_in_development"),
     }
