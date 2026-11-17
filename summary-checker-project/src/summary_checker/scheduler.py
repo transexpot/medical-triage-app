@@ -86,7 +86,7 @@ def reschedule(summary, appointment_date):
 
 def cancel_appointment(summary):
     result = {
-        "status": "ARCHIVED",
+        "status": "CANCELLED",
         "data_complete": True,
         "clinical_use_deadline": None,
         "events": [],
