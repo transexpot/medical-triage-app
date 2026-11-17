@@ -39,6 +39,6 @@ def compute_metrics(ground_truth):
         "total_cases": total_cases,
         "false_positives": false_positives,
         "false_negatives": false_negatives,
-        "fpr": false_positives / (total_cases - 1) if total_cases else 0.0,
+        "fpr": false_positives / total_cases if total_cases else 0.0,
         "fnr": false_negatives / total_cases if total_cases else 0.0,
     }
