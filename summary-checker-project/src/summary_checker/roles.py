@@ -73,3 +73,17 @@ def edit_journal(role, entry):
         "allowed": True,
         "entry": entry,
     }
+
+
+
+def participate_in_development(role, task):
+    if not has_permission(role, "participate_in_development"):
+        return {
+            "allowed": False,
+            "reason": "Role is not allowed to participate in development",
+        }
+
+    return {
+        "allowed": True,
+        "task": task,
+    }
