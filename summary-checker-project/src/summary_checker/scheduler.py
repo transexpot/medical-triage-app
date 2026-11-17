@@ -46,14 +46,14 @@ def reschedule(summary, appointment_date):
         result["events"].append("INVALID_APPOINTMENT_DATE")
         return result
 
+    today = datetime.now().strftime("%Y-%m-%d")
+
     if has_blocker(summary):
         result["status"] = "BLOCKED"
         result["data_complete"] = False
         result["events"].append("BLOCKER_PRESENT")
 
-        glucose_date = summary.get("glucose_measurement_date")
-
-        if glucose_date and appointment_date < glucose_date:
+        if appointment_date < today:
             result["events"].append("DEADLINE_MISSED")
 
         return result
