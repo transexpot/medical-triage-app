@@ -47,7 +47,7 @@ def change_criticality(role, criticality):
     }
 
 
-def change_status(role, status):
+def change_status(role, status=None):
     if not has_permission(role, "change_status"):
         return {
             "allowed": False,
