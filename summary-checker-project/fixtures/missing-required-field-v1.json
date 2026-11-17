@@ -1,0 +1,12 @@
+{
+  "summary_id": "SUM-AT-002",
+  "patient_ref": "PAT-AT-002",
+  "glucose_value": 7.2,
+  "glucose_unit": "mmol/L",
+  "glucose_condition": "FASTING",
+  "glucose_source": "LAB",
+  "weight_value": 78.4,
+  "weight_unit": "kg",
+  "weight_measurement_date": "2026-11-10",
+  "weight_source": "CLINIC"
+}
