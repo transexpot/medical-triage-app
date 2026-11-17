@@ -21,3 +21,29 @@ def has_permission(role, action):
         return False
 
     return action in ROLE_PERMISSIONS[role]
+
+
+def classify_defect(role, defect):
+    if not has_permission(role, "classify_defect"):
+        return {
+            "allowed": False,
+            "reason": "Role is not allowed to classify defects",
+        }
+
+    return {
+        "allowed": True,
+        "defect": defect,
+    }
+
+
+def change_status(role, status):
+    if not has_permission(role, "change_status"):
+        return {
+            "allowed": False,
+            "reason": "Role is not allowed to change status",
+        }
+
+    return {
+        "allowed": True,
+        "status": status,
+    }
