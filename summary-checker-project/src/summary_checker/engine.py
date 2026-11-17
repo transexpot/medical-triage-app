@@ -1,4 +1,3 @@
-import uuid
 import json
 from datetime import datetime
 
@@ -124,6 +123,4 @@ def validate_summary(summary):
 
 
 def process(summary):
-    result = validate_summary(summary)
-    result["events"].append(str(uuid.uuid4()))
-    return result
+    return validate_summary(summary)
