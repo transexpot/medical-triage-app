@@ -80,7 +80,10 @@ def reschedule(summary, appointment_date):
     result["events"].append("CHECKS_PRESERVED")
     result["events"].append("APPOINTMENT_RESCHEDULED")
 
-    return resultdef cancel_appointment(summary):
+    return result
+
+
+def cancel_appointment(summary):
     result = {
         "status": "ARCHIVED",
         "data_complete": True,
