@@ -1,50 +1,52 @@
 import json
 import os
+import sys
 import unittest
 
 
-class TestAT004UnknownSource(unittest.TestCase):
-    def test_unknown_source_needs_clarification(self):
+sys.path.insert(
+    0,
+    os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__),
+            "..",
+            "..",
+            "src",
+        )
+    ),
+)
+
+from summary_checker.engine import process
+
+
+class TestAT004InvalidUnit(unittest.TestCase):
+    def test_invalid_unit_is_blocked(self):
         fixture_path = os.path.join(
             os.path.dirname(__file__),
             "..",
             "..",
             "fixtures",
-            "valid-summary-v1.json",
+            "invalid-unit-v1.json",
         )
 
         with open(fixture_path, "r", encoding="utf-8") as file:
             summary = json.load(file)
 
-        # Создаём копию валидной сводки
-        # и подменяем источник глюкозы
-        # на значение вне справочника.
-        invalid_summary = summary.copy()
-        invalid_summary["glucose_source"] = "UNKNOWN_SOURCE_999"
+        result = process(summary)
 
-        # Источник должен присутствовать,
-        # но не совпадать с известным источником.
-        self.assertIn("glucose_source", invalid_summary)
         self.assertEqual(
-            invalid_summary["glucose_source"],
-            "UNKNOWN_SOURCE_999",
+            result["status"],
+            "BLOCKED",
         )
 
-        # Обязательные поля глюкозы должны остаться корректными.
-        self.assertIn("glucose_value", invalid_summary)
-        self.assertIn("glucose_unit", invalid_summary)
-        self.assertIn("glucose_condition", invalid_summary)
-        self.assertIn("glucose_measurement_date", invalid_summary)
+        self.assertFalse(result["data_complete"])
 
-        # Это статическая проверка fixture.
-        # После создания движка здесь будет вызов
-        # summary_checker.process(invalid_summary)
-        # и проверка:
-        # self.assertEqual(
-        #     result["status"],
-        #     "NEEDS_CLARIFICATION",
-        # )
-        # self.assertFalse(result["data_complete"])
+        self.assertTrue(len(result["defects"]) > 0)
+
+        self.assertIn(
+            "INVALID_UNIT",
+            [defect["reason"] for defect in result["defects"]],
+        )
 
 
 if __name__ == "__main__":
