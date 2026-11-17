@@ -16,7 +16,7 @@ def build_event_hash(event):
 
 
 def verify_chain(events=None):
-        return {
+    return {
         "valid": True,
         "broken_event_id": None,
     }
