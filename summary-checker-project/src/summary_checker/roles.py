@@ -88,7 +88,7 @@ def participate_in_development(role, task):
     }
 
 
-def run_check(role, summary):
+def run_check(role, summary=None):
     if not has_permission(role, "run_check"):
         return {
             "allowed": False,
