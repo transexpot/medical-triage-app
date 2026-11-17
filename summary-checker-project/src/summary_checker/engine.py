@@ -88,7 +88,7 @@ def validate_summary(summary):
             result["defects"].append(
                 {
                     "field": "weight_measurement_date",
-                    "class": "WARNING",
+                    "class": "BLOCKER",
                     "reason": "INVALID_DATE_FORMAT",
                 }
             )
