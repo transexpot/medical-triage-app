@@ -1,6 +1,22 @@
 import json
 import os
+import sys
 import unittest
+
+
+sys.path.insert(
+    0,
+    os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__),
+            "..",
+            "..",
+            "src",
+        )
+    ),
+)
+
+from summary_checker.scheduler import reschedule
 
 
 class TestAT005CDoubleReschedule(unittest.TestCase):
@@ -16,46 +32,43 @@ class TestAT005CDoubleReschedule(unittest.TestCase):
         with open(fixture_path, "r", encoding="utf-8") as file:
             summary = json.load(file)
 
-        # Первая новая дата приёма.
         first_reschedule_date = "2026-12-01"
-
-        # Вторая новая дата приёма.
         second_reschedule_date = "2026-12-15"
 
-        # Проверяем, что вторая дата позже первой.
-        self.assertLess(
+        first_result = reschedule(
+            summary,
             first_reschedule_date,
+        )
+
+        second_result = reschedule(
+            summary,
             second_reschedule_date,
         )
 
-        # Проверяем, что обе даты в будущем
-        # относительно даты измерения глюкозы.
-        self.assertLess(
-            summary["glucose_measurement_date"],
-            first_reschedule_date,
+        self.assertEqual(
+            first_result["status"],
+            "RESCHEDULED",
         )
-        self.assertLess(
-            summary["glucose_measurement_date"],
+
+        self.assertEqual(
+            second_result["status"],
+            "RESCHEDULED",
+        )
+
+        self.assertEqual(
+            second_result["clinical_use_deadline"],
             second_reschedule_date,
         )
 
-        # Это статическая проверка fixture.
-        # После создания движка здесь будет вызов
-        # summary_checker.reschedule(
-        #     summary,
-        #     first_reschedule_date,
-        # )
-        # затем:
-        # summary_checker.reschedule(
-        #     summary,
-        #     second_reschedule_date,
-        # )
-        # и проверка:
-        # self.assertEqual(
-        #     result["clinical_use_deadline"],
-        #     second_reschedule_date,
-        # )
-        # self.assertIn("CHECKS_PRESERVED", result["events"])
+        self.assertIn(
+            "CHECKS_PRESERVED",
+            second_result["events"],
+        )
+
+        self.assertIn(
+            "APPOINTMENT_RESCHEDULED",
+            second_result["events"],
+        )
 
 
 if __name__ == "__main__":
