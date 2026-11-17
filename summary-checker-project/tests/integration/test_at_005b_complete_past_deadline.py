@@ -1,6 +1,22 @@
 import json
 import os
+import sys
 import unittest
+
+
+sys.path.insert(
+    0,
+    os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__),
+            "..",
+            "..",
+            "src",
+        )
+    ),
+)
+
+from summary_checker.scheduler import reschedule
 
 
 class TestAT005BCompletePastDeadline(unittest.TestCase):
@@ -16,40 +32,24 @@ class TestAT005BCompletePastDeadline(unittest.TestCase):
         with open(fixture_path, "r", encoding="utf-8") as file:
             summary = json.load(file)
 
-        # Имитируем перенос приёма на прошлую дату.
         past_appointment_date = "2026-10-01"
 
-        # Проверяем, что новая дата в прошлом
-        # относительно даты измерения глюкозы.
-        self.assertLess(
+        result = reschedule(
+            summary,
             past_appointment_date,
-            summary["glucose_measurement_date"],
         )
 
-        # Проверяем, что данные полны:
-        # все обязательные поля присутствуют.
-        required_fields = [
-            "summary_id",
-            "patient_ref",
-            "glucose_value",
-            "glucose_unit",
-            "glucose_condition",
-            "glucose_measurement_date",
-            "glucose_source",
-        ]
+        self.assertEqual(
+            result["status"],
+            "DEADLINE_MISSED",
+        )
 
-        for field in required_fields:
-            self.assertIn(field, summary)
-            self.assertIsNotNone(summary[field])
-            self.assertNotEqual(summary[field], "")
+        self.assertTrue(result["data_complete"])
 
-        # Это статическая проверка fixture.
-        # После создания движка здесь будет вызов
-        # summary_checker.reschedule(summary, past_appointment_date)
-        # и проверка:
-        # self.assertEqual(result["status"], "DEADLINE_MISSED")
-        # self.assertTrue(result["data_complete"])
-        # self.assertIn("DEADLINE_MISSED", result["events"])
+        self.assertIn(
+            "DEADLINE_MISSED",
+            result["events"],
+        )
 
 
 if __name__ == "__main__":
