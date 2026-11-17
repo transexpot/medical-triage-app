@@ -60,3 +60,16 @@ def change_status(role, status):
         "allowed": True,
         "status": status,
     }
+
+
+def edit_journal(role, entry):
+    if not has_permission(role, "edit_journal"):
+        return {
+            "allowed": False,
+            "reason": "Role is not allowed to edit journal",
+        }
+
+    return {
+        "allowed": True,
+        "entry": entry,
+    }
