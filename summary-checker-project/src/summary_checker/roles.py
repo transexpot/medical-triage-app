@@ -73,17 +73,3 @@ def edit_journal(role, entry):
         "allowed": True,
         "entry": entry,
     }
-
-
-
-def edit_journal(role, entry):
-    if not has_permission(role, "edit_journal"):
-        return {
-            "allowed": False,
-            "reason": "Role is not allowed to edit journal",
-        }
-
-    return {
-        "allowed": True,
-        "entry": entry,
-    }
