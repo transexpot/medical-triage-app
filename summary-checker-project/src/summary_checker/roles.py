@@ -57,7 +57,7 @@ def change_status(role, status=None):
     }
 
 
-def edit_journal(role, entry):
+def edit_journal(role, entry=None):
     if not has_permission(role, "edit_journal"):
         return {
             "allowed": False,
