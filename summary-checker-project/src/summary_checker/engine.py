@@ -43,16 +43,6 @@ def validate_summary(summary):
         "events": [],
     }
 
-    for field in REQUIRED_FIELDS:
-        if field not in summary or summary[field] in (None, ""):
-            result["defects"].append(
-                {
-                    "field": field,
-                    "class": "BLOCKER",
-                    "reason": "MISSING_REQUIRED_FIELD",
-                }
-            )
-
     if "glucose_measurement_date" in summary:
         if not is_valid_iso_date(summary["glucose_measurement_date"]):
             result["defects"].append(
