@@ -123,6 +123,3 @@ def validate_summary(summary):
 
 def process(summary):
     return validate_summary(summary)
-
-def process(summary):
-    return validate_summary(summary)
