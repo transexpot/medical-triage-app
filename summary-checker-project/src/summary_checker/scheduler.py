@@ -37,12 +37,14 @@ def reschedule(summary, appointment_date):
     result = {
         "status": "RESCHEDULED",
         "data_complete": True,
+        "clinical_use_deadline": appointment_date,
         "events": [],
     }
 
     if not is_valid_iso_date(appointment_date):
         result["status"] = "BLOCKED"
         result["data_complete"] = False
+        result["clinical_use_deadline"] = None
         result["events"].append("INVALID_APPOINTMENT_DATE")
         return result
 
@@ -51,6 +53,7 @@ def reschedule(summary, appointment_date):
     if has_blocker(summary):
         result["status"] = "BLOCKED"
         result["data_complete"] = False
+        result["clinical_use_deadline"] = None
         result["events"].append("BLOCKER_PRESENT")
 
         if appointment_date < today:
@@ -63,12 +66,14 @@ def reschedule(summary, appointment_date):
     if appointment_date < today:
         result["status"] = "DEADLINE_MISSED"
         result["data_complete"] = True
+        result["clinical_use_deadline"] = None
         result["events"].append("DEADLINE_MISSED")
         return result
 
     if appointment_date <= glucose_date:
         result["status"] = "BLOCKED"
         result["data_complete"] = False
+        result["clinical_use_deadline"] = None
         result["events"].append("APPOINTMENT_NOT_IN_FUTURE")
         return result
 
