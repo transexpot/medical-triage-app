@@ -77,7 +77,6 @@ def reschedule(summary, appointment_date):
         result["events"].append("APPOINTMENT_NOT_IN_FUTURE")
         return result
 
-    result["events"].append("CHECKS_PRESERVED")
     result["events"].append("APPOINTMENT_RESCHEDULED")
     result["events"].append("DEADLINE_RECALCULATED")
 
