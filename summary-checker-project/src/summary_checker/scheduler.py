@@ -65,7 +65,7 @@ def reschedule(summary, appointment_date):
 
     if appointment_date < today:
         result["status"] = "DEADLINE_MISSED"
-        result["data_complete"] = True
+        result["data_complete"] = False
         result["clinical_use_deadline"] = None
         result["events"].append("DEADLINE_MISSED")
         return result
