@@ -28,6 +28,14 @@ def verify_chain(events=None):
                 "broken_event_id": event.get("event_id"),
             }
 
+        expected_hash = build_event_hash(event)
+
+        if event.get("event_hash") != expected_hash:
+            return {
+                "valid": False,
+                "broken_event_id": event.get("event_id"),
+            }
+
         previous_hash = event.get("event_hash")
 
     return {
