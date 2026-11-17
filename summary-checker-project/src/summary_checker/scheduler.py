@@ -37,7 +37,7 @@ def reschedule(summary, appointment_date):
     result = {
         "status": "RESCHEDULED",
         "data_complete": True,
-        "clinical_use_deadline"] = today
+        "clinical_use_deadline": appointment_date,
         "events": [],
     }
 
@@ -97,5 +97,7 @@ def cancel_appointment(summary):
     result["events"].append("DEADLINE_CANCELLED")
     result["events"].append("STATUS_COMPUTED")
     result["events"].append("FLAG_COMPUTED")
+
+    result["clinical_use_deadline"] = today
 
     return result
