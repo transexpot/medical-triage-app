@@ -1,7 +1,5 @@
 ROLE_PERMISSIONS = {
-    "executor": [
-        "change_status",
-    ],
+    "executor": [],
     "physician": [
         "review_summary",
         "approve_summary",
