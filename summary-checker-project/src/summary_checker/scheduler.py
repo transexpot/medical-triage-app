@@ -60,6 +60,12 @@ def reschedule(summary, appointment_date):
 
     glucose_date = summary["glucose_measurement_date"]
 
+    if appointment_date < today:
+        result["status"] = "DEADLINE_MISSED"
+        result["data_complete"] = True
+        result["events"].append("DEADLINE_MISSED")
+        return result
+
     if appointment_date <= glucose_date:
         result["status"] = "BLOCKED"
         result["data_complete"] = False
