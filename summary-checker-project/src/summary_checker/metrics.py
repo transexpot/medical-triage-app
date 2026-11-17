@@ -5,6 +5,8 @@ def compute_metrics(ground_truth):
 
     false_positives = 0
     false_negatives = 0
+    true_negatives = 0
+    expected_positives = 0
 
     for case in acceptance_cases:
         expected_defect = False
@@ -29,16 +31,24 @@ def compute_metrics(ground_truth):
             expected_defect = True
             actual_defect = case.get("actual_rule") == case["expected_rule"]
 
-        if expected_defect and not actual_defect:
-            false_positives += 1
+        if expected_defect:
+            expected_positives += 1
 
-        if not expected_defect and actual_defect:
-            false_negatives += 1
+            if not actual_defect:
+                false_negatives += 1
+        else:
+            true_negatives += 1
+
+            if actual_defect:
+                false_positives += 1
+
+    fpr_denominator = false_positives + true_negatives
+    fnr_denominator = false_negatives + expected_positives
 
     return {
         "total_cases": total_cases,
         "false_positives": false_positives,
         "false_negatives": false_negatives,
-        "fpr": false_positives / total_cases if total_cases else 0.0,
-        "fnr": false_negatives / total_cases if total_cases else 0.0,
+        "fpr": false_positives / fpr_denominator if fpr_denominator else 0.0,
+        "fnr": false_negatives / fnr_denominator if fnr_denominator else 0.0,
     }
