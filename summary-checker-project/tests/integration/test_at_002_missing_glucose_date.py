@@ -1,49 +1,52 @@
 import json
 import os
+import sys
 import unittest
 
 
-class TestAT002MissingGlucoseDate(unittest.TestCase):
-    def test_missing_glucose_date_is_blocked(self):
+sys.path.insert(
+    0,
+    os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__),
+            "..",
+            "..",
+            "src",
+        )
+    ),
+)
+
+from summary_checker.engine import process
+
+
+class TestAT002MissingRequiredField(unittest.TestCase):
+    def test_missing_required_field_is_blocked(self):
         fixture_path = os.path.join(
             os.path.dirname(__file__),
             "..",
             "..",
             "fixtures",
-            "valid-summary-v1.json",
+            "missing-required-field-v1.json",
         )
 
         with open(fixture_path, "r", encoding="utf-8") as file:
             summary = json.load(file)
 
-        # Создаём дефектную копию сводки:
-        # удаляем дату измерения глюкозы.
-        invalid_summary = summary.copy()
-        invalid_summary.pop("glucose_measurement_date", None)
+        result = process(summary)
 
-        required_fields = [
-            "summary_id",
-            "patient_ref",
-            "glucose_value",
-            "glucose_unit",
-            "glucose_condition",
-            "glucose_source",
-        ]
+        self.assertEqual(
+            result["status"],
+            "BLOCKED",
+        )
 
-        for field in required_fields:
-            self.assertIn(field, invalid_summary)
-            self.assertIsNotNone(invalid_summary[field])
-            self.assertNotEqual(invalid_summary[field], "")
+        self.assertFalse(result["data_complete"])
 
-        # Дата глюкозы должна отсутствовать.
-        self.assertNotIn("glucose_measurement_date", invalid_summary)
+        self.assertTrue(len(result["defects"]) > 0)
 
-        # Это статическая проверка fixture.
-        # После создания движка здесь будет вызов
-        # summary_checker.process(invalid_summary)
-        # и проверка:
-        # self.assertEqual(result["status"], "BLOCKED")
-        # self.assertFalse(result["data_complete"])
+        self.assertIn(
+            "MISSING_REQUIRED_FIELD",
+            [defect["reason"] for defect in result["defects"]],
+        )
 
 
 if __name__ == "__main__":
