@@ -1,6 +1,5 @@
 ROLE_PERMISSIONS = {
     "executor": [
-        "classify_defect",
         "change_status",
     ],
     "physician": [
