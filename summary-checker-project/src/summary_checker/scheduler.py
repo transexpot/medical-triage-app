@@ -81,8 +81,6 @@ def reschedule(summary, appointment_date):
     result["events"].append("APPOINTMENT_RESCHEDULED")
     result["events"].append("DEADLINE_RECALCULATED")
 
-    result["clinical_use_deadline"] = today
-
     return result
 
 
