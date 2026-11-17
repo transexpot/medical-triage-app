@@ -1,5 +1,7 @@
 ROLE_PERMISSIONS = {
     "executor": [],
+    "reviewer": [],
+    "external_reviewer": [],
     "physician": [
         "review_summary",
         "approve_summary",
@@ -19,6 +21,19 @@ def has_permission(role, action):
     return action in ROLE_PERMISSIONS[role]
 
 
+def run_check(role, summary=None):
+    if not has_permission(role, "run_check"):
+        return {
+            "allowed": False,
+            "reason": "Role is not allowed to run checks",
+        }
+
+    return {
+        "allowed": True,
+        "summary": summary,
+    }
+
+
 def classify_defect(role, defect=None):
     if not has_permission(role, "classify_defect"):
         return {
@@ -32,18 +47,6 @@ def classify_defect(role, defect=None):
     }
 
 
-def change_criticality(role, criticality=None):
-    if not has_permission(role, "change_status"):
-        return {
-            "allowed": False,
-            "reason": "Role is not allowed to change criticality",
-        }
-
-    return {
-        "allowed": True,
-        "criticality": criticality,
-    }
-
 def change_status(role, status=None):
     if not has_permission(role, "change_status"):
         return {
@@ -54,6 +57,19 @@ def change_status(role, status=None):
     return {
         "allowed": True,
         "status": status,
+    }
+
+
+def change_criticality(role, criticality=None):
+    if not has_permission(role, "change_status"):
+        return {
+            "allowed": False,
+            "reason": "Role is not allowed to change criticality",
+        }
+
+    return {
+        "allowed": True,
+        "criticality": criticality,
     }
 
 
@@ -70,7 +86,7 @@ def edit_journal(role, entry=None):
     }
 
 
-def participate_in_development(role, task):
+def participate_in_development(role, task=None):
     if not has_permission(role, "participate_in_development"):
         return {
             "allowed": False,
@@ -80,17 +96,4 @@ def participate_in_development(role, task):
     return {
         "allowed": True,
         "task": task,
-    }
-
-
-def run_check(role, summary=None):
-    if not has_permission(role, "run_check"):
-        return {
-            "allowed": False,
-            "reason": "Role is not allowed to run checks",
-        }
-
-    return {
-        "allowed": True,
-        "summary": summary,
     }
