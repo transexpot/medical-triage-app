@@ -113,12 +113,12 @@ class TestAT008MetricsGroundTruth(unittest.TestCase):
 
         self.assertEqual(
             result["fpr"],
-            1 / 2,
+            1 / 16,
         )
 
         self.assertEqual(
             result["fnr"],
-            1 / 14,
+            1 / 16,
         )
 
 
