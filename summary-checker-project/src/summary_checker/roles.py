@@ -1,6 +1,5 @@
 FORBIDDEN_ACTIONS = {
     "executor": [
-        "run_check",
         "classify_defect",
         "change_status",
     ],
