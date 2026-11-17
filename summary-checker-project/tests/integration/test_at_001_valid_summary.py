@@ -1,6 +1,22 @@
 import json
 import os
+import sys
 import unittest
+
+
+sys.path.insert(
+    0,
+    os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__),
+            "..",
+            "..",
+            "src",
+        )
+    ),
+)
+
+from summary_checker.engine import process
 
 
 class TestAT001ValidSummary(unittest.TestCase):
@@ -16,30 +32,19 @@ class TestAT001ValidSummary(unittest.TestCase):
         with open(fixture_path, "r", encoding="utf-8") as file:
             summary = json.load(file)
 
-        required_fields = [
-            "summary_id",
-            "patient_ref",
-            "glucose_value",
-            "glucose_unit",
-            "glucose_condition",
-            "glucose_measurement_date",
-            "glucose_source",
-        ]
+        result = process(summary)
 
-        for field in required_fields:
-            self.assertIn(field, summary)
-            self.assertIsNotNone(summary[field])
-            self.assertNotEqual(summary[field], "")
+        self.assertEqual(
+            result["status"],
+            "READY_FOR_PHYSICIAN",
+        )
 
-        self.assertEqual(summary["glucose_unit"], "mmol/L")
-        self.assertEqual(summary["glucose_condition"], "FASTING")
+        self.assertTrue(result["data_complete"])
 
-        # Это статическая проверка fixture.
-        # После создания движка здесь будет вызов
-        # summary_checker.process(summary)
-        # и проверка:
-        # self.assertEqual(result["status"], "READY_FOR_PHYSICIAN")
-        # self.assertTrue(result["data_complete"])
+        self.assertEqual(result["defects"], [])
+
+        self.assertIn("STATUS_COMPUTED", result["events"])
+        self.assertIn("FLAG_COMPUTED", result["events"])
 
 
 if __name__ == "__main__":
