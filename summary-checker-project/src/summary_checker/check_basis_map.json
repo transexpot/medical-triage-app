@@ -1,0 +1,90 @@
+{
+  "check_basis_map_version": "v1.0",
+  "checks": {
+    "patient_identity": {
+      "fields": [
+        "patient_ref"
+      ],
+      "source": "patient_registry",
+      "checklist_version": "v1.0",
+      "criticality_map_version": "v1.0",
+      "check_basis_map_version": "v1.0"
+    },
+    "value_date_present": {
+      "fields": [
+        "glucose_measurement_date",
+        "hba1c_measurement_date",
+        "weight_measurement_date"
+      ],
+      "source": "source_registry",
+      "checklist_version": "v1.0",
+      "criticality_map_version": "v1.0",
+      "check_basis_map_version": "v1.0"
+    },
+    "value_source_present": {
+      "fields": [
+        "glucose_source",
+        "hba1c_source",
+        "weight_source"
+      ],
+      "source": "source_registry",
+      "checklist_version": "v1.0",
+      "criticality_map_version": "v1.0",
+      "check_basis_map_version": "v1.0"
+    },
+    "unit_valid": {
+      "fields": [
+        "glucose_unit",
+        "hba1c_unit",
+        "weight_unit"
+      ],
+      "source": "unit_registry",
+      "checklist_version": "v1.0",
+      "criticality_map_version": "v1.0",
+      "check_basis_map_version": "v1.0"
+    },
+    "glucose_condition_valid": {
+      "fields": [
+        "glucose_condition"
+      ],
+      "source": "condition_registry",
+      "checklist_version": "v1.0",
+      "criticality_map_version": "v1.0",
+      "check_basis_map_version": "v1.0"
+    },
+    "value_readable": {
+      "fields": [
+        "glucose_value",
+        "hba1c_value",
+        "weight_value"
+      ],
+      "source": "source_registry",
+      "checklist_version": "v1.0",
+      "criticality_map_version": "v1.0",
+      "check_basis_map_version": "v1.0"
+    },
+    "contract_compliance": {
+      "fields": [
+        "patient_ref",
+        "summary_id",
+        "glucose_value",
+        "glucose_unit",
+        "glucose_condition",
+        "glucose_measurement_date",
+        "glucose_source",
+        "hba1c_value",
+        "hba1c_unit",
+        "hba1c_measurement_date",
+        "hba1c_source",
+        "weight_value",
+        "weight_unit",
+        "weight_measurement_date",
+        "weight_source"
+      ],
+      "source": "contract_registry",
+      "checklist_version": "v1.0",
+      "criticality_map_version": "v1.0",
+      "check_basis_map_version": "v1.0"
+    }
+  }
+}
