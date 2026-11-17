@@ -22,7 +22,7 @@ def has_permission(role, action):
     return action in ROLE_PERMISSIONS[role]
 
 
-def classify_defect(role, defect):
+def classify_defect(role, defect=None):
     if not has_permission(role, "classify_defect"):
         return {
             "allowed": False,
