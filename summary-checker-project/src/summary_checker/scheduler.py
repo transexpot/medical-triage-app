@@ -25,7 +25,9 @@ def has_blocker(summary):
         if field not in summary or summary[field] in (None, ""):
             return True
 
-    if not is_valid_iso_date(summary["glucose_measurement_date"]):
+    glucose_date = summary.get("glucose_measurement_date")
+
+    if glucose_date is None or not is_valid_iso_date(glucose_date):
         return True
 
     return False
@@ -49,18 +51,16 @@ def reschedule(summary, appointment_date):
         result["data_complete"] = False
         result["events"].append("BLOCKER_PRESENT")
 
-        if appointment_date < summary["glucose_measurement_date"]:
+        glucose_date = summary.get("glucose_measurement_date")
+
+        if glucose_date and appointment_date < glucose_date:
             result["events"].append("DEADLINE_MISSED")
 
         return result
 
-    if not is_valid_iso_date(summary["glucose_measurement_date"]):
-        result["status"] = "BLOCKED"
-        result["data_complete"] = False
-        result["events"].append("INVALID_GLUCOSE_DATE")
-        return result
+    glucose_date = summary["glucose_measurement_date"]
 
-    if appointment_date <= summary["glucose_measurement_date"]:
+    if appointment_date <= glucose_date:
         result["status"] = "BLOCKED"
         result["data_complete"] = False
         result["events"].append("APPOINTMENT_NOT_IN_FUTURE")
