@@ -1,56 +1,23 @@
-FORBIDDEN_ACTIONS = {
+ROLE_PERMISSIONS = {
     "executor": [
+        "run_check",
         "classify_defect",
         "change_status",
     ],
-    "reviewer": [
-        "change_status",
-        "change_criticality",
+    "physician": [
+        "review_summary",
+        "approve_summary",
+        "request_changes",
     ],
-    "external_reviewer": [
-        "edit_journal",
-        "participate_in_development",
+    "auditor": [
+        "view_journal",
+        "view_metrics",
     ],
 }
 
 
-def is_allowed(actor_role, action):
-    forbidden = FORBIDDEN_ACTIONS.get(actor_role, [])
+def has_permission(role, action):
+    if role not in ROLE_PERMISSIONS:
+        return False
 
-    return action not in forbidden
-
-
-def run_check(actor_role):
-    return {
-        "allowed": is_allowed(actor_role, "run_check"),
-    }
-
-
-def classify_defect(actor_role):
-    return {
-        "allowed": is_allowed(actor_role, "classify_defect"),
-    }
-
-
-def change_status(actor_role):
-    return {
-        "allowed": is_allowed(actor_role, "change_status"),
-    }
-
-
-def change_criticality(actor_role):
-    return {
-        "allowed": is_allowed(actor_role, "change_criticality"),
-    }
-
-
-def edit_journal(actor_role):
-    return {
-        "allowed": is_allowed(actor_role, "edit_journal"),
-    }
-
-
-def participate_in_development(actor_role):
-    return {
-        "allowed": is_allowed(actor_role, "participate_in_development"),
-    }
+    return action in ROLE_PERMISSIONS[role]
