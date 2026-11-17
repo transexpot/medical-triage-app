@@ -1,6 +1,5 @@
 ROLE_PERMISSIONS = {
     "executor": [
-        "run_check",
         "classify_defect",
         "change_status",
     ],
