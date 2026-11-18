@@ -26,7 +26,27 @@ VALID_CONDITIONS = {
     "RANDOM",
 }
 
+ALLOWED_SOURCE_PREFIXES_V1 = (
+    "LAB_RESULT:",
+    "CGM:",
+    "HOME_GLUCOMETER:",
+    "CLINIC_RECORD:",
+    "PATIENT_DIARY:",
+)
 
+def is_source_valid(source):
+    if not isinstance(source, str):
+        return False
+
+    if not any(
+        source.startswith(prefix)
+        for prefix in ALLOWED_SOURCE_PREFIXES_V1
+    ):
+        return False
+
+    _, _, identifier = source.partition(":")
+    return bool(identifier.strip())
+    
 def is_valid_iso_date(value):
     try:
         datetime.strptime(value, "%Y-%m-%d")
