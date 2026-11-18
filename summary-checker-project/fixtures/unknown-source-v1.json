@@ -1,0 +1,17 @@
+{
+  "summary_id": "00000000-0000-0000-0000-000000000004",
+  "patient_ref": "patient-004",
+  "glucose_value": 5.5,
+  "glucose_unit": "mmol/L",
+  "glucose_condition": "FASTING",
+  "glucose_measurement_date": "2026-11-17",
+  "glucose_source": "лаборатория",
+  "hba1c_value": null,
+  "hba1c_unit": null,
+  "hba1c_measurement_date": null,
+  "hba1c_source": null,
+  "weight_value": null,
+  "weight_unit": null,
+  "weight_measurement_date": null,
+  "weight_source": null
+}
