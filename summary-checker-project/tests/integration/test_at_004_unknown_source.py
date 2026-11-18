@@ -19,14 +19,14 @@ sys.path.insert(
 from summary_checker.engine import process
 
 
-class TestAT004InvalidUnit(unittest.TestCase):
-    def test_invalid_unit_is_blocked(self):
+class TestAT004UnknownSource(unittest.TestCase):
+    def test_unknown_source_needs_clarification(self):
         fixture_path = os.path.join(
             os.path.dirname(__file__),
             "..",
             "..",
             "fixtures",
-            "invalid-unit-v1.json",
+            "unknown-source-v1.json",
         )
 
         with open(fixture_path, "r", encoding="utf-8") as file:
@@ -36,16 +36,27 @@ class TestAT004InvalidUnit(unittest.TestCase):
 
         self.assertEqual(
             result["status"],
-            "BLOCKED",
+            "NEEDS_CLARIFICATION",
         )
 
         self.assertFalse(result["data_complete"])
 
-        self.assertTrue(len(result["defects"]) > 0)
+        source_defects = [
+            defect
+            for defect in result["defects"]
+            if defect["field"] == "glucose_source"
+        ]
 
-        self.assertIn(
-            "INVALID_UNIT",
-            [defect["reason"] for defect in result["defects"]],
+        self.assertEqual(len(source_defects), 1)
+
+        self.assertEqual(
+            source_defects[0]["class"],
+            "NEEDS_CLARIFICATION",
+        )
+
+        self.assertEqual(
+            source_defects[0]["reason"],
+            "UNKNOWN_SOURCE",
         )
 
 
