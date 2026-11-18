@@ -104,6 +104,16 @@ def validate_summary(summary):
                 }
             )
 
+        if "glucose_source" in summary:
+        if not is_source_valid(summary["glucose_source"]):
+            result["defects"].append(
+                {
+                    "field": "glucose_source",
+                    "class": "NEEDS_CLARIFICATION",
+                    "reason": "UNKNOWN_SOURCE",
+                }
+            )
+
     if "weight_measurement_date" in summary:
         if not is_valid_iso_date(summary["weight_measurement_date"]):
             result["defects"].append(
@@ -120,6 +130,12 @@ def validate_summary(summary):
         if defect["class"] == "BLOCKER"
     ]
 
+    needs_clarification = [
+        defect
+        for defect in result["defects"]
+        if defect["class"] == "NEEDS_CLARIFICATION"
+    ]
+
     warnings = [
         defect
         for defect in result["defects"]
@@ -128,6 +144,9 @@ def validate_summary(summary):
 
     if blockers:
         result["status"] = "BLOCKED"
+        result["data_complete"] = False
+    elif needs_clarification:
+        result["status"] = "NEEDS_CLARIFICATION"
         result["data_complete"] = False
     elif warnings:
         result["status"] = "READY_WITH_WARNINGS"
